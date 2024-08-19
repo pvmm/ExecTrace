@@ -142,8 +142,8 @@ class ExecTrace():
 
 
     def register_label(self, address):
-      if address not in self.labeled_addresses:
-        self.labeled_addresses.append(address)
+        if address not in self.labeled_addresses:
+            self.labeled_addresses.append(address)
 
 
     def read_rom(self, filename):
@@ -166,7 +166,7 @@ class ExecTrace():
             self.schedule_entry_point(p, needs_label=True)
 
         self.restart_from_another_entry_point()
-        self.register_label(self.current_entry_point) # I think this is not needed.
+        self.register_label(self.current_entry_point)
 
         while self.PC is not None:
             address = self.PC
@@ -232,6 +232,8 @@ class ExecTrace():
         self.branch(address, conditional=False)
 
     def branch(self, address, conditional):
+        if self.current_entry_point_needs_label:
+            self.register_label(address)
         if address > self.current_entry_point and address < self.PC:
             self.add_range(start=self.current_entry_point,
                            end=address-1,
